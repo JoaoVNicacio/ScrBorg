@@ -35,6 +35,9 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+# Compiling
+out/
+
 # IDE config
 .vs/
 .vscode/
