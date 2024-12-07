@@ -6,17 +6,17 @@ public class MainViewModel : ReactiveObject
 {
     public MainViewModel(IAndroidScreenMirrorService scrcpyService)
     {
-        _scrcpyService = scrcpyService;
+        _screenMirroringService = scrcpyService;
 
-        _scrcpyService.OutputReceived += OnOutputReceived;
-        _scrcpyService.ErrorReceived += OnErrorReceived;
+        _screenMirroringService.OutputReceived += OnOutputReceived;
+        _screenMirroringService.ErrorReceived += OnErrorReceived;
 
         StartCommand = ReactiveCommand.Create(StartMirroring);
         StopCommand = ReactiveCommand.Create(StopMirroring);
     }
 
     #region Fields
-    private readonly IAndroidScreenMirrorService _scrcpyService;
+    private readonly IAndroidScreenMirrorService _screenMirroringService;
     private bool _isRunning;
     #endregion
 
@@ -36,13 +36,13 @@ public class MainViewModel : ReactiveObject
 
     private void StartMirroring()
     {
-        _scrcpyService.StartMirroring();
+        _screenMirroringService.StartMirroring();
         IsRunning = true;
     }
 
     private void StopMirroring()
     {
-        _scrcpyService.StopMirroring();
+        _screenMirroringService.StopMirroring();
         IsRunning = false;
     }
 

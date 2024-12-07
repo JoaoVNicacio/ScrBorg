@@ -10,20 +10,15 @@ class Program
         .RegisterServices()
         .BuildServiceProvider();
 
-    public static void Main(string[] args)
-    {
-        BuildAvaloniaApp().UseReactiveUI()
-                          .StartWithClassicDesktopLifetime(
+    static void Main(string[] args)
+        => BuildAvaloniaApp().UseReactiveUI()
+                             .StartWithClassicDesktopLifetime(
                                 args,
                                 shutdownMode: ShutdownMode.OnMainWindowClose);
-    }
 
-    public static AppBuilder BuildAvaloniaApp()
-    {
-        return AppBuilder.Configure<App>()
-                         .UsePlatformDetect()
-                         .LogToTrace()
-                         .UseReactiveUI()
-                         .UseSkia();
-    }
+    static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>()
+                                                      .UsePlatformDetect()
+                                                      .LogToTrace()
+                                                      .UseReactiveUI()
+                                                      .UseSkia();
 }

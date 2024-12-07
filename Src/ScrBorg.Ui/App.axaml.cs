@@ -1,5 +1,6 @@
 using Avalonia.Controls.ApplicationLifetimes;
 using Microsoft.Extensions.DependencyInjection;
+using ScrBorg.Ui.Windows;
 
 namespace ScrBorg.Ui;
 

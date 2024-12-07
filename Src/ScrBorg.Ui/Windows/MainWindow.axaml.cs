@@ -1,6 +1,7 @@
+
 using ScrBorg.Ui.ViewModels;
 
-namespace ScrBorg.Ui;
+namespace ScrBorg.Ui.Windows;
 
 public partial class MainWindow : Window
 {
@@ -11,6 +12,11 @@ public partial class MainWindow : Window
         _viewModel = viewModel;
         DataContext = viewModel;
 
+        InitializeComponent();
+    }
+
+    public MainWindow()
+    {
         InitializeComponent();
     }
 }

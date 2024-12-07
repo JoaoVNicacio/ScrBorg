@@ -1,0 +1,16 @@
+<Style xmlns="https://github.com/avaloniaui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       Selector="Border.gradient">
+    <Setter Property="CornerRadius"
+            Value="20" />
+    <Setter Property="Background">
+        <LinearGradientBrush StartPoint="0,0"
+                             EndPoint="1,1"
+                             Opacity="0.3">
+            <GradientStop Color="#ACACAC"
+                          Offset="0" />
+            <GradientStop Color="#464646"
+                          Offset="1" />
+        </LinearGradientBrush>
+    </Setter>
+</Style>

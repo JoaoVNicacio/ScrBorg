@@ -1,31 +1,32 @@
 using System.Diagnostics;
+using ScrBorg.Core.ScreenMirror;
 
 namespace ScrBorg.Application.Services;
 
-public class AndroidScreenMirrorService : IAndroidScreenMirrorService
+public class AndroidScreenMirrorService(
+    IScreenMirroringResolver screenMirroringResolver) : IAndroidScreenMirrorService
 {
+    #region Constants
     private const string ALREADY_RUNNING_ERROR_MESSAGE = "The screen mirroring is already running.";
+    #endregion
+
+    #region PropertiesAndCompositions
     private Process? _process;
+    private readonly IScreenMirroringResolver _screenMirroringResolver = screenMirroringResolver;
+    #endregion
+
+    #region Events
     public event Action<string>? OutputReceived;
     public event Action<string>? ErrorReceived;
+    #endregion
 
+    #region PublicMethods
     public void StartMirroring(string arguments = "")
     {
-        if (_process is not null and { HasExited: true })
+        if (_process is not null and { HasExited: !true })
             throw new InvalidOperationException(ALREADY_RUNNING_ERROR_MESSAGE);
 
-        _process = new Process
-        {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = "scrcpy",
-                Arguments = arguments,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-            }
-        };
+        _process = _screenMirroringResolver.GetScreenMirroringProcess(arguments);
 
         _process.OutputDataReceived += (sender, e) =>
         {
@@ -46,11 +47,12 @@ public class AndroidScreenMirrorService : IAndroidScreenMirrorService
 
     public void StopMirroring()
     {
-        if (_process is not null and { HasExited: true })
+        if (_process is not null and { HasExited: !true })
         {
             _process.Kill();
             _process.Dispose();
             _process = null;
         }
     }
+    #endregion
 }
