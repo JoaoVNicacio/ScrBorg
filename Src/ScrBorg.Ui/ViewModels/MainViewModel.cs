@@ -1,3 +1,4 @@
+using System;
 using ScrBorg.Application.Services;
 
 namespace ScrBorg.Ui.ViewModels;
@@ -13,11 +14,14 @@ public class MainViewModel : ReactiveObject
 
         StartCommand = ReactiveCommand.Create(StartMirroring);
         StopCommand = ReactiveCommand.Create(StopMirroring);
+        ConfigureWirelessCommand = ReactiveCommand.Create(ConfigureWireless);
     }
 
     #region Fields
     private readonly IAndroidScreenMirrorService _screenMirroringService;
     private bool _isRunning;
+    private bool _useTcpIp;
+    private uint _displayId;
     #endregion
 
     #region Properties
@@ -28,15 +32,32 @@ public class MainViewModel : ReactiveObject
         get => _isRunning;
         set => this.RaiseAndSetIfChanged(ref _isRunning, value);
     }
+
+    public bool ShouldUseTcpIp
+    {
+        get => _useTcpIp;
+        set => this.RaiseAndSetIfChanged(ref _useTcpIp, value);
+    }
+
+    public uint DisplayId
+    {
+        get => _displayId;
+        set => this.RaiseAndSetIfChanged(ref _displayId, (uint)value);
+    }
     #endregion
 
     #region InterfaceEvents
     public ReactiveCommand<Unit, Unit> StartCommand { get; }
     public ReactiveCommand<Unit, Unit> StopCommand { get; }
+    public ReactiveCommand<Unit, Unit> ConfigureWirelessCommand { get; }
 
     private void StartMirroring()
     {
-        _screenMirroringService.StartMirroring();
+        _screenMirroringService.StartMirroring(
+            _useTcpIp ? EStartArgs.Wireless : EStartArgs.USB,
+            _displayId
+        );
+
         IsRunning = true;
     }
 
@@ -45,6 +66,8 @@ public class MainViewModel : ReactiveObject
         _screenMirroringService.StopMirroring();
         IsRunning = false;
     }
+
+    private void ConfigureWireless() => _screenMirroringService.ConfigureWireless();
 
     private void OnOutputReceived(string message) => TerminalOutput.Add($"OUTPUT: {message}");
 

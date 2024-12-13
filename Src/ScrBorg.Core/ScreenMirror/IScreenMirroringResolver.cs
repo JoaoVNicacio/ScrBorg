@@ -4,5 +4,10 @@ namespace ScrBorg.Core.ScreenMirror;
 
 public interface IScreenMirroringResolver
 {
-    Process GetScreenMirroringProcess(string arguments = "");
+    Process GetScreenMirroringProcess(
+        EStartArgs startType = EStartArgs.USB,
+        uint displayId = 0,
+        string? deviceIpAddress = DEFAULT_IP);
+
+    Process GetWirelessConfiguringProcess();
 }

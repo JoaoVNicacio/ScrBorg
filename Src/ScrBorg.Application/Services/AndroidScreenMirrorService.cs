@@ -1,4 +1,5 @@
 using System.Diagnostics;
+
 using ScrBorg.Core.ScreenMirror;
 
 namespace ScrBorg.Application.Services;
@@ -21,12 +22,19 @@ public class AndroidScreenMirrorService(
     #endregion
 
     #region PublicMethods
-    public void StartMirroring(string arguments = "")
+    public void StartMirroring(
+        EStartArgs startType = EStartArgs.USB,
+        uint displayId = 0,
+        string? deviceIpAddress = DEFAULT_IP
+    )
     {
         if (_process is not null and { HasExited: !true })
             throw new InvalidOperationException(ALREADY_RUNNING_ERROR_MESSAGE);
 
-        _process = _screenMirroringResolver.GetScreenMirroringProcess(arguments);
+        _process = _screenMirroringResolver.GetScreenMirroringProcess(
+            startType,
+            displayId,
+            deviceIpAddress);
 
         _process.OutputDataReceived += (sender, e) =>
         {
@@ -53,6 +61,12 @@ public class AndroidScreenMirrorService(
             _process.Dispose();
             _process = null;
         }
+    }
+
+    public void ConfigureWireless()
+    {
+        _screenMirroringResolver.GetWirelessConfiguringProcess()
+                                .Start();
     }
     #endregion
 }
