@@ -55,12 +55,11 @@ public class AndroidScreenMirrorService(
 
     public void StopMirroring()
     {
-        if (_process is not null and { HasExited: !true })
-        {
-            _process.Kill();
-            _process.Dispose();
-            _process = null;
-        }
+        if (_process is not ({ HasExited: !true })) return;
+        
+        _process.Kill();
+        _process.Dispose();
+        _process = null;
     }
 
     public void ConfigureWireless()

@@ -45,5 +45,6 @@ public class ScrCpyScreenMirroringResolver(
                 UseShellExecute = false,
                 CreateNoWindow = true,
             }
-        };    }
+        };
+    }
 }
